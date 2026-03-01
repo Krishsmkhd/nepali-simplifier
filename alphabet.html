@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nepali Simplifier — Reformed Alphabet</title>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f0e0c;--surface:#1a1815;--surface2:#242118;--border:#2e2b24;--red:#c0392b;--gold:#c9a84c;--gold-soft:#e8c96a;--text:#e8e0d0;--text-dim:#8a8070;--text-muted:#4a4540;--mono:'JetBrains Mono',monospace;--serif:'Crimson Pro',Georgia,serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--serif);min-height:100vh;display:flex;flex-direction:column}
+header{padding:0.9rem 2rem;border-bottom:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:space-between}
+.site-name{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.14em;color:var(--gold)}
+nav a{font-family:var(--mono);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);text-decoration:none;margin-left:1.4rem;transition:color 0.15s}
+nav a:hover,nav a.active{color:var(--text)}
+main{flex:1;max-width:980px;margin:0 auto;width:100%;padding:2.5rem 1.5rem}
+h1{font-size:1.9rem;font-weight:300;letter-spacing:0.04em;margin-bottom:0.4rem}
+h1 em{color:var(--gold);font-style:italic}
+.page-sub{font-family:var(--mono);font-size:0.65rem;color:var(--text-dim);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:2.5rem}
+h2{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin:2.2rem 0 0.8rem;padding-bottom:0.4rem;border-bottom:1px solid var(--border)}
+p.note{font-family:var(--mono);font-size:0.65rem;color:var(--text-dim);margin-bottom:1rem;line-height:1.6}
+table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:1.5rem}
+th{background:var(--surface2);color:var(--text-dim);font-family:var(--mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.6rem 1rem;text-align:left;border-bottom:1px solid var(--border)}
+td{padding:0.55rem 1rem;border-bottom:1px solid #1e1c18;font-size:0.95rem;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+.dev{font-size:1.35rem;font-family:serif;color:var(--text)}
+.rom{font-family:var(--mono);font-size:0.82rem;color:var(--gold-soft)}
+.note-cell{font-size:0.78rem;color:var(--text-muted);font-style:italic}
+.badge{display:inline-block;font-family:var(--mono);font-size:0.6rem;font-weight:600;border-radius:3px;padding:0.08rem 0.4rem;margin-left:0.3rem;vertical-align:middle}
+.b-kept{background:#0d2b0d;color:#4caf50}
+.b-merged{background:#2b1a00;color:#e8a020}
+.b-limited{background:#0d1a2b;color:#4090d0}
+.b-new{background:#0d2225;color:#40c0c0}
+.strike{text-decoration:line-through;color:var(--text-muted)}
+.group-row td{background:#1e1c18 !important;font-family:var(--mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);padding:0.35rem 1rem;border-bottom:1px solid var(--border)}
+.glance-box{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1.4rem 1.8rem;margin-bottom:1.5rem}
+.glance-box .g-label{font-family:var(--mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:0.7rem}
+.glance-chars{font-family:serif;font-size:1.5rem;line-height:2.5rem;letter-spacing:0.18rem;color:var(--text)}
+.sample-box{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:4px;padding:1.3rem 1.6rem;margin-bottom:1rem}
+.sample-box.roman{font-family:var(--mono);font-size:0.9rem;line-height:1.8rem}
+.sample-box p{font-family:serif;font-size:1.25rem;line-height:2.1rem}
+.chg{color:#e85d4a}
+footer{border-top:1px solid var(--border);padding:1.1rem;text-align:center;font-family:var(--mono);font-size:0.58rem;letter-spacing:0.07em;color:var(--text-muted)}
+footer a{color:var(--text-dim);text-decoration:none}
+footer a:hover{color:var(--text)}
+</style>
+</head>
+<body>
+<header>
+  <span class="site-name">नेपाली सरलीकरण</span>
+  <nav>
+    <a href="index.html">Converter</a>
+    <a href="alphabet.html" class="active">Alphabet</a>
+    <a href="about.html">About</a>
+  </nav>
+</header>
+
+<main>
+  <h1>Reformed Nepali <em>Alphabet</em></h1>
+  <p class="page-sub">Phonetically rationalized orthography — Krish Simkhada · 2026</p>
+
+  <!-- PRINCIPLES -->
+  <h2>Simplification Principles</h2>
+  <p class="note">Every change removes a distinction that no longer exists in spoken Nepali. Nothing is merged that speakers still distinguish.</p>
+  <table>
+    <tr><th>Change</th><th>Traditional</th><th>Reformed</th><th>Reason</th></tr>
+    <tr><td>Vowel length merged</td><td class="dev"><span class="strike">ई</span> → इ &nbsp; <span class="strike">ऊ</span> → उ</td><td class="dev">इ &nbsp; उ</td><td class="note-cell">ह्रस्व/दीर्घ distinction not maintained in speech</td></tr>
+    <tr><td>Sibilants unified</td><td class="dev"><span class="strike">श / ष</span> → स</td><td class="dev">स</td><td class="note-cell">All three pronounced identically</td></tr>
+    <tr><td>Retroflex nasal merged</td><td class="dev"><span class="strike">ण</span> → न</td><td class="dev">न</td><td class="note-cell">Indistinguishable from dental nasal in speech</td></tr>
+    <tr><td>Labial approximant merged</td><td class="dev"><span class="strike">व</span> → ब</td><td class="dev">ब</td><td class="note-cell">Merges with ब in natural speech</td></tr>
+    <tr><td>Conjunct reformed</td><td class="dev"><span class="strike">ज्ञ</span> → ग्य</td><td class="dev">ग्य</td><td class="note-cell">Nepali pronunciation is gya, not Sanskrit jña</td></tr>
+    <tr><td>Conjunct reformed</td><td class="dev"><span class="strike">क्ष</span> → क्स</td><td class="dev">क्स</td><td class="note-cell">ष merges into स; conjunct follows</td></tr>
+    <tr><td>ङ, ञ limited</td><td class="dev">ङ &nbsp; ञ</td><td class="dev">ङ &nbsp; ञ</td><td class="note-cell">Retained as conjunct nasals only (अङ्क, पञ्च)</td></tr>
+  </table>
+
+  <!-- VOWEL CHART -->
+  <h2>Vowel Chart (स्वर)</h2>
+  <table>
+    <tr><th>Reformed</th><th>Matra</th><th>Original</th><th>Roman</th><th>Example</th><th>Status</th></tr>
+    <tr><td class="dev">अ</td><td class="dev">◌</td><td class="dev">अ</td><td class="rom">a</td><td class="note-cell">amilo</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr><td class="dev">आ</td><td class="dev">ा</td><td class="dev">आ</td><td class="rom">aa (a at word end)</td><td class="note-cell">aama</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr><td class="dev">इ</td><td class="dev">ि</td><td class="dev">इ / <span class="strike">ई</span></td><td class="rom">i</td><td class="note-cell">din</td><td><span class="badge b-merged">ई merged</span></td></tr>
+    <tr><td class="dev">उ</td><td class="dev">ु</td><td class="dev">उ / <span class="strike">ऊ</span></td><td class="rom">u</td><td class="note-cell">sundar</td><td><span class="badge b-merged">ऊ merged</span></td></tr>
+    <tr><td class="dev">ए</td><td class="dev">े</td><td class="dev">ए</td><td class="rom">e</td><td class="note-cell">ek</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr><td class="dev">ऐ</td><td class="dev">ै</td><td class="dev">ऐ</td><td class="rom">ai</td><td class="note-cell">ainaa</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr><td class="dev">ओ</td><td class="dev">ो</td><td class="dev">ओ</td><td class="rom">o</td><td class="note-cell">ot'h</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr><td class="dev">औ</td><td class="dev">ौ</td><td class="dev">औ</td><td class="rom">au</td><td class="note-cell">ausadhi</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr><td class="dev">अं</td><td class="dev">ं</td><td class="dev">अं</td><td class="rom">an / am</td><td class="note-cell">sansaar</td><td><span class="badge b-kept">anusvara kept</span></td></tr>
+    <tr><td class="dev">अः</td><td class="dev">ः</td><td class="dev">अः</td><td class="rom">ah</td><td class="note-cell">mostly archaic</td><td><span class="badge b-kept">visarga kept</span></td></tr>
+  </table>
+
+  <!-- CONSONANT CHART -->
+  <h2>Consonant Chart (व्यञ्जन)</h2>
+  <table>
+    <tr><th>Reformed</th><th>Original</th><th>Roman</th><th>Approx. Sound</th><th>Status</th></tr>
+    <tr class="group-row"><td colspan="5">Velars — कण्ठ्य</td></tr>
+    <tr><td class="dev">क</td><td class="dev">क</td><td class="rom">k</td><td class="note-cell">k as in kit</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr><td class="dev">ख</td><td class="dev">ख</td><td class="rom">kh</td><td class="note-cell">kh aspirated</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr><td class="dev">ग</td><td class="dev">ग</td><td class="rom">g</td><td class="note-cell">g as in go</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr><td class="dev">घ</td><td class="dev">घ</td><td class="rom">gh</td><td class="note-cell">gh aspirated</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr><td class="dev">ङ</td><td class="dev">ङ</td><td class="rom">ng</td><td class="note-cell">ng as in sing</td><td><span class="badge b-limited">conjunct nasal only</span></td></tr>
+    <tr class="group-row"><td colspan="5">Palatals — तालव्य</td></tr>
+    <tr><td class="dev">च</td><td class="dev">च</td><td class="rom">ch</td><td class="note-cell">ch as in chair</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr><td class="dev">छ</td><td class="dev">छ</td><td class="rom">chh</td><td class="note-cell">chh aspirated</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr><td class="dev">ज</td><td class="dev">ज</td><td class="rom">j</td><td class="note-cell">j as in jar</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr><td class="dev">झ</td><td class="dev">झ</td><td class="rom">jh</td><td class="note-cell">jh aspirated</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr><td class="dev">ञ</td><td class="dev">ञ</td><td class="rom">ny</td><td class="note-cell">ny as in canyon</td><td><span class="badge b-limited">conjunct nasal only</span></td></tr>
+    <tr class="group-row"><td colspan="5">Retroflexes — मूर्धन्य · apostrophe marks retroflex in Roman</td></tr>
+    <tr><td class="dev">ट</td><td class="dev">ट</td><td class="rom">t'</td><td class="note-cell">retroflex t</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr><td class="dev">ठ</td><td class="dev">ठ</td><td class="rom">t'h</td><td class="note-cell">retroflex th aspirated</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr><td class="dev">ड</td><td class="dev">ड</td><td class="rom">d'</td><td class="note-cell">retroflex d</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr><td class="dev">ढ</td><td class="dev">ढ</td><td class="rom">d'h</td><td class="note-cell">retroflex dh aspirated</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr><td class="dev">न (absorbs ण)</td><td class="dev"><span class="strike">ण</span> → न</td><td class="rom">n</td><td class="note-cell">retroflex nasal merged with dental</td><td><span class="badge b-merged">ण merged</span></td></tr>
+    <tr class="group-row"><td colspan="5">Dentals — दन्त्य</td></tr>
+    <tr><td class="dev">त</td><td class="dev">त</td><td class="rom">t</td><td class="note-cell">dental t (softer than English)</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr><td class="dev">थ</td><td class="dev">थ</td><td class="rom">th</td><td class="note-cell">dental th aspirated</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr><td class="dev">द</td><td class="dev">द</td><td class="rom">d</td><td class="note-cell">dental d</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr><td class="dev">ध</td><td class="dev">ध</td><td class="rom">dh</td><td class="note-cell">dental dh aspirated</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr><td class="dev">न</td><td class="dev">न</td><td class="rom">n</td><td class="note-cell">dental nasal</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr class="group-row"><td colspan="5">Labials — ओष्ठ्य</td></tr>
+    <tr><td class="dev">प</td><td class="dev">प</td><td class="rom">p</td><td class="note-cell">p as in pin</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr><td class="dev">फ</td><td class="dev">फ</td><td class="rom">ph / f</td><td class="note-cell">ph aspirated; f in loanwords</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr><td class="dev">ब (absorbs व)</td><td class="dev"><span class="strike">व</span> → ब</td><td class="rom">b</td><td class="note-cell">व merges with ब in speech</td><td><span class="badge b-merged">व merged</span></td></tr>
+    <tr><td class="dev">भ</td><td class="dev">भ</td><td class="rom">bh</td><td class="note-cell">bh aspirated</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr><td class="dev">म</td><td class="dev">म</td><td class="rom">m</td><td class="note-cell">m as in map</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr class="group-row"><td colspan="5">Semivowels, Fricatives &amp; Approximants — अन्तस्थ / ऊष्म</td></tr>
+    <tr><td class="dev">य</td><td class="dev">य</td><td class="rom">y</td><td class="note-cell">y as in yes</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr><td class="dev">र</td><td class="dev">र</td><td class="rom">r</td><td class="note-cell">r slightly rolled</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr><td class="dev">ल</td><td class="dev">ल</td><td class="rom">l</td><td class="note-cell">l as in let</td><td><span class="badge b-kept">kept</span></td></tr>
+    <tr><td class="dev">स (absorbs श ष)</td><td class="dev"><span class="strike">श / ष</span> → स</td><td class="rom">s</td><td class="note-cell">s as in sun</td><td><span class="badge b-merged">श and ष merged</span></td></tr>
+    <tr><td class="dev">ह</td><td class="dev">ह</td><td class="rom">h</td><td class="note-cell">h as in hat</td><td><span class="badge b-kept">kept</span></td></tr>
+  </table>
+
+  <!-- CONJUNCTS -->
+  <h2>Conjunct Consonants (संयुक्त व्यञ्जन)</h2>
+  <table>
+    <tr><th>Traditional</th><th>Reformed</th><th>Roman</th><th>Reason</th><th>Status</th></tr>
+    <tr><td class="dev">क्ष</td><td class="dev">क्स</td><td class="rom">ksha</td><td class="note-cell">ष merges into स</td><td><span class="badge b-merged">changed</span></td></tr>
+    <tr><td class="dev">त्र</td><td class="dev">त्र</td><td class="rom">tra</td><td class="note-cell">Both त and र retained unchanged</td><td><span class="badge b-kept">unchanged</span></td></tr>
+    <tr><td class="dev">ज्ञ</td><td class="dev">ग्य</td><td class="rom">gya</td><td class="note-cell">Nepali pronunciation is gya, not Sanskrit jña</td><td><span class="badge b-new">reformed to match pronunciation</span></td></tr>
+  </table>
+
+  <!-- AT A GLANCE -->
+  <h2>Alphabet at a Glance</h2>
+  <div class="glance-box">
+    <div class="g-label">Vowels (10)</div>
+    <div class="glance-chars">अ आ इ उ ए ऐ ओ औ अं अः</div>
+  </div>
+  <div class="glance-box">
+    <div class="g-label">Consonants (ङ and ञ in limited conjunct role)</div>
+    <div class="glance-chars">क ख ग घ ङ &nbsp; च छ ज झ ञ &nbsp; ट ठ ड ढ &nbsp; त थ द ध न &nbsp; प फ ब भ म &nbsp; य र ल स ह</div>
+  </div>
+  <div class="glance-box">
+    <div class="g-label">Conjuncts</div>
+    <div class="glance-chars">क्स &nbsp;&nbsp; त्र &nbsp;&nbsp; ग्य</div>
+  </div>
+
+  <!-- ROMANIZATION SUMMARY -->
+  <h2>Romanization Summary</h2>
+  <table>
+    <tr><th>Category</th><th>Devanagari</th><th>Roman</th><th>Note</th></tr>
+    <tr><td>Short-a vowel</td><td class="dev">अ</td><td class="rom">a</td><td class="note-cell"></td></tr>
+    <tr><td>Long-a vowel</td><td class="dev">आ</td><td class="rom">aa</td><td class="note-cell">Shortens to a at word end (not for nipat)</td></tr>
+    <tr><td>I vowel (unified)</td><td class="dev">इ</td><td class="rom">i</td><td class="note-cell">Covers former इ and ई</td></tr>
+    <tr><td>U vowel (unified)</td><td class="dev">उ</td><td class="rom">u</td><td class="note-cell">Covers former उ and ऊ</td></tr>
+    <tr><td>E, Ai, O, Au</td><td class="dev">ए ऐ ओ औ</td><td class="rom">e ai o au</td><td class="note-cell"></td></tr>
+    <tr><td>Retroflex stops</td><td class="dev">ट ठ ड ढ</td><td class="rom">t' &nbsp; t'h &nbsp; d' &nbsp; d'h</td><td class="note-cell">Apostrophe marks retroflex — ASCII safe, unambiguous at sentence start</td></tr>
+    <tr><td>Dental stops</td><td class="dev">त थ द ध</td><td class="rom">t &nbsp; th &nbsp; d &nbsp; dh</td><td class="note-cell">No apostrophe = dental</td></tr>
+    <tr><td>Unified sibilant</td><td class="dev">स</td><td class="rom">s</td><td class="note-cell">Covers former स, श, ष</td></tr>
+    <tr><td>Aspirates</td><td class="dev">ख घ छ झ थ ध फ भ</td><td class="rom">base + h</td><td class="note-cell">kh, gh, chh, th, dh, ph, bh</td></tr>
+    <tr><td>Velar nasal</td><td class="dev">ङ</td><td class="rom">ng</td><td class="note-cell">Conjunct position only — e.g. angk</td></tr>
+    <tr><td>Palatal nasal</td><td class="dev">ञ</td><td class="rom">ny</td><td class="note-cell">Conjunct position only — e.g. panycha</td></tr>
+    <tr><td>Conjuncts</td><td class="dev">क्स &nbsp; त्र &nbsp; ग्य</td><td class="rom">ksha &nbsp; tra &nbsp; gya</td><td class="note-cell"></td></tr>
+    <tr><td>Word-final aa</td><td class="dev">—</td><td class="rom">aa → a</td><td class="note-cell">eut'a, aama, hariya — not applied to nipat</td></tr>
+    <tr><td>Word-final inherent a</td><td class="dev">—</td><td class="rom">dropped</td><td class="note-cell">Nepal, sundar, des — not applied to nipat</td></tr>
+    <tr><td>Nipat / postpositions</td><td class="dev">को मा ले लाई बाट र</td><td class="rom">ko maa le laai baat ra</td><td class="note-cell">Keep full vowels; written with space before them</td></tr>
+    <tr><td>Sentence start</td><td class="dev">—</td><td class="rom">Capitalised</td><td class="note-cell">First word after . ! ? ।</td></tr>
+    <tr><td>Proper nouns</td><td class="dev">नेपाल काठमाडौं…</td><td class="rom">Nepal Kathmandu…</td><td class="note-cell">Established international spellings kept by convention</td></tr>
+  </table>
+
+  <!-- SAMPLE PARAGRAPH -->
+  <h2>Sample Paragraph — Reformed Devanagari</h2>
+  <div class="sample-box">
+    <p>नेपाल एउटा सुन्दर <span class="chg">देस</span> हो। यहाँ अग्लो हिमाल, हरिया जंगल र फराकिला <span class="chg">उपत्यकाहरु</span> छन्। <span class="chg">नेपालिहरु</span> आफ्नो <span class="chg">संस्क्रिति</span> र परम्परामा <span class="chg">बिस्बास</span> गर्छन्। यहाँका मानिसहरु <span class="chg">साहसि</span> र <span class="chg">परिस्रमि</span> छन्। हाम्रो <span class="chg">देसको</span> प्राकृतिक सौन्दर्यले संसारभरका <span class="chg">पर्यटकहरुलाइ</span> <span class="chg">आकर्सित</span> गर्छ।</p>
+  </div>
+
+  <h2>Same Paragraph — Romanized</h2>
+  <div class="sample-box roman">
+    Nepal eut'a sundar des ho. Yahaan aglo himaal, hariya jangal ra pharaakila upatyaakaharu chhan. Nepaliharu aaphno sanskriti ra parampara maa bisbaas garchhan. Yahaan ka maanisaharu saahasi ra parisrami chhan. Haamro des ko praakritik saundarya le sansaarbhar ka paryat'akaharu laai aakarsit garchha.
+  </div>
+
+  <h2>Spelling Changes Applied in Sample</h2>
+  <table>
+    <tr><th>Traditional</th><th>Reformed</th><th>Rules Applied</th></tr>
+    <tr><td class="dev">देश</td><td class="dev chg">देस</td><td class="note-cell">श → स</td></tr>
+    <tr><td class="dev">उपत्यकाहरू</td><td class="dev chg">उपत्यकाहरु</td><td class="note-cell">ऊ → उ</td></tr>
+    <tr><td class="dev">नेपालीहरू</td><td class="dev chg">नेपालिहरु</td><td class="note-cell">ई → इ &nbsp;|&nbsp; ऊ → उ</td></tr>
+    <tr><td class="dev">संस्कृति</td><td class="dev chg">संस्क्रिति</td><td class="note-cell">ृ written as रि to reflect pronunciation</td></tr>
+    <tr><td class="dev">विश्वास</td><td class="dev chg">बिस्बास</td><td class="note-cell">व → ब &nbsp;|&nbsp; श → स &nbsp;|&nbsp; ई → इ</td></tr>
+    <tr><td class="dev">साहसी</td><td class="dev chg">साहसि</td><td class="note-cell">ई → इ</td></tr>
+    <tr><td class="dev">परिश्रमी</td><td class="dev chg">परिस्रमि</td><td class="note-cell">श → स &nbsp;|&nbsp; ई → इ</td></tr>
+    <tr><td class="dev">देशको</td><td class="dev chg">देसको</td><td class="note-cell">श → स</td></tr>
+    <tr><td class="dev">पर्यटकहरूलाई</td><td class="dev chg">पर्यटकहरुलाइ</td><td class="note-cell">ऊ → उ &nbsp;|&nbsp; ई → इ</td></tr>
+    <tr><td class="dev">आकर्षित</td><td class="dev chg">आकर्सित</td><td class="note-cell">ष → स</td></tr>
+  </table>
+</main>
+
+<footer>
+  © 2026 Krish Simkhada &nbsp;·&nbsp;
+  <a href="index.html">Converter</a> &nbsp;·&nbsp;
+  <a href="alphabet.html">Alphabet</a> &nbsp;·&nbsp;
+  <a href="about.html">About</a>
+</footer>
+</body>
+</html>

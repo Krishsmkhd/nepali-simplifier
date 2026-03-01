@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why Nepali Spelling Needs to Catch Up With Nepali Speech — Krish Simkhada</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Sans+3:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#faf9f7;--surface:#ffffff;--border:#e8e2d9;--red:#b5292a;--gold:#9a6c1f;--text:#1a1714;--text-dim:#5a5550;--text-muted:#9a9590;--serif:'Lora',Georgia,serif;--sans:'Source Sans 3',system-ui,sans-serif;--mono:'JetBrains Mono',monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--serif);line-height:1.8}
+header{border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;background:var(--surface)}
+.site-name{font-family:var(--sans);font-size:0.75rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim)}
+nav a{font-family:var(--sans);font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;margin-left:1.3rem;transition:color 0.15s}
+nav a:hover,nav a.active{color:var(--text)}
+.hero{max-width:760px;margin:0 auto;padding:4.5rem 2rem 2.5rem;text-align:center}
+.category{font-family:var(--sans);font-size:0.7rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);margin-bottom:1.3rem;display:flex;align-items:center;justify-content:center;gap:0.7rem}
+.category::before,.category::after{content:'';display:block;height:1px;width:36px;background:var(--red);opacity:0.35}
+h1{font-size:clamp(1.9rem,5vw,2.9rem);font-weight:500;line-height:1.22;letter-spacing:-0.01em;margin-bottom:1.3rem}
+h1 em{color:var(--red);font-style:italic}
+.dek{font-family:var(--sans);font-size:1.1rem;font-weight:300;color:var(--text-dim);line-height:1.6;max-width:580px;margin:0 auto 2.2rem}
+.byline{font-family:var(--sans);font-size:0.82rem;color:var(--text-muted);display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap}
+.byline strong{color:var(--text-dim);font-weight:600}
+.bdot{color:var(--border)}
+hr.hero-rule{max-width:760px;margin:0 auto;border:none;border-top:1px solid var(--border)}
+article{max-width:660px;margin:0 auto;padding:3.2rem 2rem 5rem}
+p{margin-bottom:1.55rem;font-size:1.06rem;color:var(--text)}
+h2{font-family:var(--serif);font-size:1.45rem;font-weight:500;color:var(--text);margin:2.8rem 0 1.1rem;line-height:1.3}
+h3{font-family:var(--sans);font-size:0.7rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--red);margin:2.3rem 0 0.9rem}
+blockquote{border-left:3px solid var(--red);margin:2.3rem 0;padding:0.4rem 0 0.4rem 1.8rem;font-size:1.2rem;font-style:italic;color:var(--text-dim);line-height:1.6}
+.dev{font-size:1.12em}
+.example-pair{display:flex;gap:0;margin:1.8rem 0;border:1px solid var(--border);border-radius:5px;overflow:hidden;background:var(--surface)}
+.example-col{flex:1;padding:1.1rem 1.3rem}
+.example-col:first-child{border-right:1px solid var(--border)}
+.ex-label{font-family:var(--sans);font-size:0.62rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.6rem}
+.ex-label.reformed{color:var(--red)}
+.ex-text{font-size:1.15rem;line-height:1.95rem;font-family:var(--serif)}
+.ex-text.roman{font-family:var(--mono);font-size:0.88rem;line-height:1.65rem;color:var(--text-dim)}
+.change{color:var(--red);font-weight:500}
+table.chart{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--border);border-radius:5px;overflow:hidden;margin:1.5rem 0 2rem;font-size:0.9rem}
+table.chart th{background:#f2ede6;color:var(--text-dim);font-family:var(--sans);font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.6rem 0.9rem;text-align:left;border-bottom:1px solid var(--border)}
+table.chart td{padding:0.5rem 0.9rem;border-bottom:1px solid #f0ebe3;vertical-align:middle}
+table.chart tr:last-child td{border-bottom:none}
+table.chart tr:nth-child(even) td{background:#fdf9f5}
+.dev-c{font-size:1.25rem;font-family:serif}
+.rom-c{font-family:var(--mono);font-size:0.8rem;color:var(--gold)}
+.note-c{font-size:0.78rem;color:var(--text-muted);font-style:italic}
+.strike{text-decoration:line-through;color:var(--text-muted)}
+.badge{display:inline-block;font-family:var(--sans);font-size:0.62rem;font-weight:600;border-radius:3px;padding:0.08rem 0.4rem;margin-left:0.25rem;vertical-align:middle}
+.b-m{background:#fff3e0;color:#b45309}
+.b-l{background:#eff6ff;color:#1d4ed8}
+.b-k{background:#f0fdf4;color:#15803d}
+.b-n{background:#ecfeff;color:#0e7490}
+.callout{background:#fef9f0;border:1px solid #e8d9b8;border-radius:5px;padding:1.2rem 1.4rem;margin:2.2rem 0;font-family:var(--sans);font-size:0.9rem;color:var(--text-dim);line-height:1.6}
+.callout strong{color:var(--text)}
+.try-it{background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--red);border-radius:5px;padding:1.4rem;margin:2.2rem 0;text-align:center}
+.try-it .try-label{font-family:var(--sans);font-size:0.62rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--red);margin-bottom:0.5rem}
+.try-it p{font-family:var(--sans);font-size:0.88rem;color:var(--text-dim);margin:0}
+.try-it a{color:var(--red);text-decoration:none;font-weight:600}
+.try-it a:hover{text-decoration:underline}
+hr.close{border:none;border-top:1px solid var(--border);margin:2.8rem 0 1.8rem}
+.author-note{font-family:var(--sans);font-size:0.83rem;color:var(--text-muted);line-height:1.6}
+.author-note strong{color:var(--text-dim)}
+footer{border-top:1px solid var(--border);padding:1.8rem;text-align:center;font-family:var(--sans);font-size:0.72rem;color:var(--text-muted);letter-spacing:0.04em}
+footer a{color:var(--text-dim);text-decoration:none}
+footer a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<header>
+  <span class="site-name">Krish Simkhada</span>
+  <nav>
+    <a href="index.html">Converter</a>
+    <a href="alphabet.html">Alphabet</a>
+    <a href="about.html" class="active">About</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <div class="category">Linguistics &nbsp; Essay</div>
+  <h1>Why Nepali Spelling Needs to<br><em>Catch Up With Nepali Speech</em></h1>
+  <p class="dek">Our writing system carries centuries of Sanskrit inheritance — sounds we no longer make, distinctions we no longer draw. It is time to talk about a simpler, more honest orthography.</p>
+  <div class="byline">
+    <span><strong>Krish Simkhada</strong></span>
+    <span class="bdot">·</span>
+    <span>March 2026</span>
+    <span class="bdot">·</span>
+    <span>Linguistics</span>
+  </div>
+</div>
+<hr class="hero-rule">
+
+<article>
+
+<p>When a Nepali child sits down to learn to write, they face a puzzle that has nothing to do with how they actually speak. They must memorise whether a word uses <span class="dev">इ</span> or <span class="dev">ई</span>, <span class="dev">उ</span> or <span class="dev">ऊ</span>, <span class="dev">स</span>, <span class="dev">श</span>, or <span class="dev">ष</span>. They will spend hours drilling these distinctions. And when they grow up, they will still make these "errors" in text messages — because something in them knows, even if they cannot articulate it, that the distinctions do not reflect how they actually talk.</p>
+
+<p>This gap between spoken Nepali and written Nepali is not a sign of ignorance. It is a sign that our writing system has not kept pace with our language. Languages evolve. Spoken Nepali has evolved. The orthography, rooted in Sanskrit conventions formalised centuries ago, largely has not.</p>
+
+<p>This essay is a proposal — not a decree — to think seriously about what a phonetically honest, practically simpler Nepali writing system might look like. And to propose alongside it a formal romanization system that works without special characters or workarounds.</p>
+
+<h2>The Sounds We Do Not Actually Make</h2>
+
+<p>Sanskrit distinguished three sibilant consonants: the dental <span class="dev">स</span>, the palatal <span class="dev">श</span>, and the retroflex <span class="dev">ष</span>. These are genuinely distinct sounds in classical Sanskrit. But in modern spoken Nepali, nearly all speakers — regardless of region, education, or dialect — produce a single sibilant sound. The three letters represent one phoneme.</p>
+
+<p>Consider what this means in practice. The words <span class="dev">संस्कृति</span>, <span class="dev">विश्वास</span>, and <span class="dev">देश</span> each use a different sibilant letter, but a native speaker pronouncing all three uses the same sound in each. The three-way distinction exists only on the page.</p>
+
+<blockquote>"A writing system that requires distinctions the spoken language no longer makes is not preserving the language — it is preserving the fossil of an older one."</blockquote>
+
+<p>The same is true of the short and long vowels — what grammarians call ह्रस्व and दीर्घ. Written Nepali distinguishes <span class="dev">इ</span> from <span class="dev">ई</span>, and <span class="dev">उ</span> from <span class="dev">ऊ</span>. Spoken Nepali, for the overwhelming majority of speakers, does not. Knowing whether <span class="dev">नेपाली</span> takes the long <span class="dev">ई</span> or the short <span class="dev">इ</span> is a pure spelling convention, not a phonological fact.</p>
+
+<p>And then there is <span class="dev">ज्ञ</span>, traditionally listed in the Nepali alphabet as a conjunct consonant pronounced something like the Sanskrit <em>jña</em>. Every Nepali speaker pronounces this as <em>gya</em> — the word <span class="dev">ज्ञान</span> is said <em>gyaan</em>. The spelling simply does not reflect the sound.</p>
+
+<h2>What the Reform Proposes</h2>
+
+<p>These observations lead naturally to a set of specific, principled changes. The key is that every change proposed here removes a distinction that no longer exists in speech — nothing is merged that speakers still distinguish. This is the guiding rule: the writing system should reflect the spoken language, not an idealised ancestor of it.</p>
+
+<table class="chart">
+  <tr><th>Traditional</th><th>Reformed</th><th>Roman</th><th>Reason</th></tr>
+  <tr><td class="dev-c"><span class="strike">ई</span></td><td class="dev-c">इ <span class="badge b-m">merged</span></td><td class="rom-c">i</td><td class="note-c">Long/short vowel distinction not maintained in speech</td></tr>
+  <tr><td class="dev-c"><span class="strike">ऊ</span></td><td class="dev-c">उ <span class="badge b-m">merged</span></td><td class="rom-c">u</td><td class="note-c">Long/short vowel distinction not maintained in speech</td></tr>
+  <tr><td class="dev-c"><span class="strike">श / ष</span></td><td class="dev-c">स <span class="badge b-m">merged</span></td><td class="rom-c">s</td><td class="note-c">All three sibilants pronounced identically</td></tr>
+  <tr><td class="dev-c"><span class="strike">ण</span></td><td class="dev-c">न <span class="badge b-m">merged</span></td><td class="rom-c">n</td><td class="note-c">Retroflex nasal indistinguishable from dental in speech</td></tr>
+  <tr><td class="dev-c"><span class="strike">व</span></td><td class="dev-c">ब <span class="badge b-m">merged</span></td><td class="rom-c">b</td><td class="note-c">Labial approximant merges with ब in natural speech</td></tr>
+  <tr><td class="dev-c"><span class="strike">ज्ञ</span></td><td class="dev-c">ग्य <span class="badge b-n">reformed</span></td><td class="rom-c">gya</td><td class="note-c">Actual Nepali pronunciation is gya, not Sanskrit jña</td></tr>
+  <tr><td class="dev-c"><span class="strike">क्ष</span></td><td class="dev-c">क्स <span class="badge b-n">reformed</span></td><td class="rom-c">ksha</td><td class="note-c">ष merges into स; conjunct follows naturally</td></tr>
+  <tr><td class="dev-c">ङ, ञ</td><td class="dev-c">ङ, ञ <span class="badge b-l">limited</span></td><td class="rom-c">ng, ny</td><td class="note-c">Retained as conjunct nasals only — e.g. अङ्क, पञ्च</td></tr>
+</table>
+
+<p>Crucially, the reform does <em>not</em> touch the retroflex consonants <span class="dev">ट ठ ड ढ</span>. These are genuinely distinct from their dental counterparts <span class="dev">त थ द ध</span> in spoken Nepali, and merging them would destroy real meaning. The words <span class="dev">टाल</span> and <span class="dev">ताल</span> mean different things. The distinction is alive and must be preserved.</p>
+
+<p>The Devanagari script itself stays. This is not a proposal to romanize Nepali or to abandon the script — the script is part of our identity and is entirely capable of representing the reformed system.</p>
+
+<h2>The Paragraph, Before and After</h2>
+
+<p>Abstract principles are easier to grasp when you can see them in action. Here is a short paragraph in traditional Nepali, followed by the reformed orthography, and then the romanized form.</p>
+
+<div class="example-pair">
+  <div class="example-col">
+    <div class="ex-label">Traditional Nepali</div>
+    <div class="ex-text">नेपाल एउटा सुन्दर देश हो। नेपालीहरू आफ्नो संस्कृति र परम्परामा विश्वास गर्छन्। यहाँका मानिसहरू साहसी र परिश्रमी छन्।</div>
+  </div>
+  <div class="example-col">
+    <div class="ex-label reformed">Reformed Nepali</div>
+    <div class="ex-text">नेपाल एउटा सुन्दर <span class="change">देस</span> हो। <span class="change">नेपालिहरु</span> आफ्नो <span class="change">संस्क्रिति</span> र परम्परामा <span class="change">बिस्बास</span> गर्छन्। यहाँका मानिसहरु <span class="change">साहसि</span> र <span class="change">परिस्रमि</span> छन्।</div>
+  </div>
+</div>
+
+<div class="example-pair">
+  <div class="example-col" style="flex:1">
+    <div class="ex-label reformed">Romanized — Reformed System</div>
+    <div class="ex-text roman">Nepal eut'a sundar des ho. Nepaliharu aaphno sanskriti ra parampara maa bisbaas garchhan. Yahaan ka maanisaharu saahasi ra parisrami chhan.</div>
+  </div>
+</div>
+
+<p>The reformed version is immediately readable to any Nepali speaker. Nothing is lost in meaning. What is gained is honesty — the text now reflects how people actually say these words.</p>
+
+<h2>A Formal Romanization — The Apostrophe System</h2>
+
+<p>Any serious proposal for a reformed Nepali writing system must also address romanization. Nepali speakers already write in Roman script constantly — in text messages, social media captions, and English-language documents with Nepali words. But there is no agreed standard. Everyone improvises, and the same word can be spelled a dozen different ways.</p>
+
+<p>The system proposed here has one key design decision: retroflexes are marked with an apostrophe. So <span class="dev">ट</span> becomes <span style="font-family:var(--mono)">t'</span> and <span class="dev">ठ</span> becomes <span style="font-family:var(--mono)">t'h</span>. This solves two problems that capital-letter approaches cannot: it works in all-caps text (TAAL vs T'AAL is still distinct), and it works at the start of a sentence where a capital T would be ambiguous. All characters used exist on a standard keyboard.</p>
+
+<p>The system also handles word boundaries thoughtfully. Word-final <em>aa</em> shortens to <em>a</em> — so <span class="dev">एउटा</span> is <em>eut'a</em>, not <em>eut'aa</em>. Word-final inherent <em>a</em> is dropped entirely — so <span class="dev">देस</span> is <em>des</em>, not <em>desa</em>. Postpositions and nipat — words like <span class="dev">को</span>, <span class="dev">मा</span>, <span class="dev">ले</span> — are exempt from these rules and keep their full vowels: <em>ko</em>, <em>maa</em>, <em>le</em>.</p>
+
+<h3>A Note on Proper Nouns</h3>
+
+<p>One deliberate exception in the romanization system concerns established international proper nouns. By the system's rules, <span class="dev">नेपाल</span> would consistently romanize as <em>Nepaal</em> — the पा carries an aa matra that is not word-final. However, <em>Nepal</em> has a globally recognised conventional English spelling used in diplomacy, journalism, and cartography. The same applies to Kathmandu, Pokhara, and similar place names. The proposed system treats these as proper noun exceptions, keeping their conventional spellings while applying the full ruleset to all other words.</p>
+
+<h2>What This Is Not</h2>
+
+<p>This proposal does not claim that the traditional script is wrong or that Sanskrit is irrelevant. The traditional orthography preserves etymological information — knowing that <span class="dev">देश</span> comes from a Sanskrit root that used <span class="dev">श</span> tells you something. This has real value in literary, religious, and scholarly contexts, and no one is proposing to abolish those forms.</p>
+
+<p>It does not claim that spoken Nepali is uniform. Nepali is spoken across Nepal, India, Bhutan, and diaspora communities worldwide, and dialects vary. The observations here reflect the broad Central Nepali that underlies the written standard. And it does not claim to be final — this is a starting proposal, not a conclusion. The right outcome is sustained conversation among linguists, educators, publishers, and ordinary Nepali speakers.</p>
+
+<h2>Precedent: Other Languages Have Done This</h2>
+
+<p>Nepali would not be the first language to rationalize its writing system in response to phonological change. Turkish replaced its Arabic-derived script with Roman in 1928. German has undergone multiple spelling reforms in the twentieth century. Norwegian has had official spelling changes as recently as 2005. In each case the motivation was essentially the same: to bring writing closer to the way people actually speak and to reduce the burden on learners. The Nepali conversation is part of a wider pattern.</p>
+
+<div class="callout">
+  <strong>On the question of children:</strong> Perhaps the most practical argument for reform is what it would mean for primary education. The current system asks children to memorise distinctions that carry no phonological meaning — they cannot hear the difference between <span class="dev">इ</span> and <span class="dev">ई</span> because there is none in modern Nepali. A reformed system would significantly reduce this arbitrary memorisation burden, allowing more cognitive space for actual reading, writing, and comprehension.
+</div>
+
+<div class="try-it">
+  <div class="try-label">Interactive Tool</div>
+  <p>The <a href="index.html">Nepali Simplifier</a> converts traditional Nepali into reformed Devanagari and romanized Nepali in real time. The full <a href="alphabet.html">alphabet reference</a> is available as a companion document.</p>
+</div>
+
+<p>Languages always evolve. The spoken form moves, and eventually — if we are thoughtful about it rather than passive — the written form can move with it. Nepali is a living language, spoken by tens of millions of people across the world. It deserves an orthography that reflects the living language, not just its classical inheritance.</p>
+
+<p>I am not a professional linguist. I am a Nepali speaker who thinks about language. The ideas here are a starting point, not a conclusion. I would genuinely welcome responses — corrections, counterarguments, extensions, and improvements — from anyone who cares about where this language is going.</p>
+
+<hr class="close">
+
+<div class="author-note">
+  <strong>Krish Simkhada</strong> writes about language, culture, and ideas. This essay accompanies a proposed reformed Nepali alphabet and a working Nepali text converter. Feedback and discussion welcome.
+</div>
+
+</article>
+
+<footer>
+  © 2026 Krish Simkhada &nbsp;·&nbsp;
+  <a href="index.html">Converter</a> &nbsp;·&nbsp;
+  <a href="alphabet.html">Alphabet</a> &nbsp;·&nbsp;
+  <a href="about.html">About</a>
+</footer>
+</body>
+</html>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nepali Simplifier — Converter</title>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0f0e0c; --surface:#1a1815; --surface2:#242118; --border:#2e2b24;
+  --red:#c0392b; --red-soft:#e85d4a; --gold:#c9a84c; --gold-soft:#e8c96a;
+  --text:#e8e0d0; --text-dim:#8a8070; --text-muted:#4a4540;
+  --mono:'JetBrains Mono',monospace; --serif:'Crimson Pro',Georgia,serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--serif);min-height:100vh;display:flex;flex-direction:column}
+header{padding:0.9rem 2rem;border-bottom:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:space-between}
+.site-name{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.14em;color:var(--gold)}
+nav a{font-family:var(--mono);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);text-decoration:none;margin-left:1.4rem;transition:color 0.15s}
+nav a:hover,nav a.active{color:var(--text)}
+.hero{text-align:center;padding:2.5rem 2rem 1.8rem;border-bottom:1px solid var(--border)}
+.hero-rule{display:flex;align-items:center;gap:1rem;justify-content:center;margin-bottom:1rem}
+.hero-rule::before,.hero-rule::after{content:'';height:1px;width:44px}
+.hero-rule::before{background:linear-gradient(90deg,transparent,var(--gold))}
+.hero-rule::after{background:linear-gradient(90deg,var(--gold),transparent)}
+h1{font-size:clamp(1.5rem,4vw,2.4rem);font-weight:300;letter-spacing:0.04em}
+h1 em{color:var(--gold);font-style:italic}
+.subtitle{font-family:var(--mono);font-size:0.65rem;color:var(--text-dim);letter-spacing:0.12em;text-transform:uppercase;margin-top:0.5rem}
+main{flex:1;max-width:1080px;margin:0 auto;width:100%;padding:2rem 1.5rem}
+.label{font-family:var(--mono);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);margin-bottom:0.55rem;display:flex;align-items:center;gap:0.45rem}
+.label::before{content:'';display:block;width:9px;height:1px;background:var(--gold)}
+textarea{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:var(--serif);font-size:1.18rem;line-height:1.85;padding:1rem 1.3rem;resize:vertical;min-height:120px;outline:none;transition:border-color 0.2s}
+textarea::placeholder{color:var(--text-muted);font-style:italic}
+textarea:focus{border-color:var(--gold)}
+.controls{display:flex;gap:0.7rem;margin-top:0.7rem;flex-wrap:wrap;align-items:center}
+button{font-family:var(--mono);font-size:0.65rem;letter-spacing:0.09em;text-transform:uppercase;border:none;border-radius:3px;cursor:pointer;padding:0.55rem 1.1rem;transition:all 0.15s}
+.btn-p{background:var(--red);color:white}
+.btn-p:hover{background:var(--red-soft)}
+.btn-s{background:transparent;color:var(--text-dim);border:1px solid var(--border)}
+.btn-s:hover{border-color:var(--text-dim);color:var(--text)}
+.char-count{font-family:var(--mono);font-size:0.62rem;color:var(--text-muted);margin-left:auto}
+.outputs{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;margin-top:1.1rem}
+@media(max-width:620px){.outputs{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:4px;overflow:hidden}
+.card-header{display:flex;align-items:center;justify-content:space-between;padding:0.6rem 1rem;border-bottom:1px solid var(--border);background:var(--surface2)}
+.card-title{font-family:var(--mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold)}
+.copy-btn{font-family:var(--mono);font-size:0.56rem;letter-spacing:0.07em;background:transparent;color:var(--text-muted);border:1px solid var(--text-muted);padding:0.16rem 0.45rem;border-radius:2px;text-transform:uppercase;cursor:pointer;transition:all 0.15s}
+.copy-btn:hover{color:var(--text-dim);border-color:var(--text-dim)}
+.copy-btn.copied{color:var(--gold);border-color:var(--gold)}
+.out-text{padding:1rem 1.3rem;font-size:1.12rem;line-height:1.95rem;min-height:100px;white-space:pre-wrap;word-break:break-word}
+.out-text.roman{font-family:var(--mono);font-size:0.88rem;line-height:1.7rem}
+.out-text.empty{color:var(--text-muted);font-style:italic;font-size:0.9rem}
+.changes-panel{margin-top:1rem;background:var(--surface);border:1px solid var(--border);border-radius:4px;overflow:hidden}
+.changes-header{display:flex;align-items:center;justify-content:space-between;padding:0.6rem 1rem;border-bottom:1px solid var(--border);background:var(--surface2)}
+.changes-title{font-family:var(--mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim)}
+.changes-count{font-family:var(--mono);font-size:0.6rem;color:var(--gold)}
+.changes-list{display:flex;flex-wrap:wrap;gap:0.4rem;padding:0.75rem 1rem}
+.ctag{font-family:var(--mono);font-size:0.65rem;background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:0.18rem 0.5rem;color:var(--text-dim);display:flex;align-items:center;gap:0.3rem}
+.ctag .from{color:var(--text-muted);text-decoration:line-through}
+.ctag .arrow{color:var(--gold)}
+.ctag .to{color:var(--red-soft)}
+.info-box{background:var(--surface2);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:4px;padding:0.85rem 1.1rem;margin-top:1.1rem;font-family:var(--mono);font-size:0.65rem;color:var(--text-dim);line-height:1.7}
+.info-box strong{color:var(--gold-soft)}
+.ref-toggle{margin-top:1.6rem;border-top:1px solid var(--border);padding-top:1.2rem}
+.toggle-btn{background:transparent;color:var(--text-dim);border:none;font-family:var(--mono);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:0.4rem;padding:0}
+.toggle-btn:hover{color:var(--text)}
+.tarrow{transition:transform 0.2s;display:inline-block}
+.tarrow.open{transform:rotate(90deg)}
+.ref-content{display:none;margin-top:0.9rem;overflow-x:auto}
+.ref-content.open{display:block}
+.ref-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:0.9rem}
+.ref-sec h4{font-family:var(--mono);font-size:0.58rem;letter-spacing:0.11em;text-transform:uppercase;color:var(--gold);margin-bottom:0.45rem;padding-bottom:0.3rem;border-bottom:1px solid var(--border)}
+.ref-row{display:flex;align-items:center;gap:0.4rem;padding:0.16rem 0}
+.ref-dev{font-size:1.05rem;min-width:38px}
+.ref-arr{color:var(--text-muted);font-size:0.65rem}
+.ref-rom{font-family:var(--mono);font-size:0.74rem;color:var(--gold-soft)}
+.ref-note{font-size:0.67rem;color:var(--text-muted);font-style:italic}
+footer{border-top:1px solid var(--border);padding:1.1rem;text-align:center;font-family:var(--mono);font-size:0.58rem;letter-spacing:0.07em;color:var(--text-muted)}
+footer a{color:var(--text-dim);text-decoration:none}
+footer a:hover{color:var(--text)}
+</style>
+</head>
+<body>
+<header>
+  <span class="site-name">नेपाली सरलीकरण</span>
+  <nav>
+    <a href="index.html" class="active">Converter</a>
+    <a href="alphabet.html">Alphabet</a>
+    <a href="about.html">About</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <div class="hero-rule"><span style="color:var(--gold);font-size:0.48rem">◆</span></div>
+  <h1>नेपाली सरलीकरण &nbsp; <em>Nepali Simplifier</em></h1>
+  <p class="subtitle">Reformed orthography &amp; romanization — Krish Simkhada · 2026</p>
+</div>
+
+<main>
+  <div style="margin-bottom:1.4rem">
+    <div class="label">Input — Traditional Nepali</div>
+    <textarea id="input" placeholder="यहाँ नेपाली लेख्नुहोस — Type or paste Nepali text here..." oninput="convert()"></textarea>
+    <div class="controls">
+      <button class="btn-p" onclick="convert()">Convert</button>
+      <button class="btn-s" onclick="clearAll()">Clear</button>
+      <button class="btn-s" onclick="loadSample()">Load Sample</button>
+      <span class="char-count" id="charCount">0 characters</span>
+    </div>
+  </div>
+
+  <div class="outputs">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Reformed Devanagari</span>
+        <button class="copy-btn" onclick="copyText('dev-out',this)">Copy</button>
+      </div>
+      <div class="out-text empty" id="dev-out">Reformed Nepali will appear here...</div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Romanized Nepali</span>
+        <button class="copy-btn" onclick="copyText('rom-out',this)">Copy</button>
+      </div>
+      <div class="out-text roman empty" id="rom-out">Romanized text will appear here...</div>
+    </div>
+  </div>
+
+  <div class="changes-panel" id="changes-panel" style="display:none">
+    <div class="changes-header">
+      <span class="changes-title">Changes Applied</span>
+      <span class="changes-count" id="changes-count"></span>
+    </div>
+    <div class="changes-list" id="changes-list"></div>
+  </div>
+
+  <div class="info-box">
+    <strong>Romanization rules:</strong> Word-final aa shortens to a (एउटा → eut'a). Word-final inherent a is dropped (देस → des). <strong>Nipat / postpositions keep their vowels</strong> and are space-separated (मा → maa, को → ko, ले → le, र → ra). Established international proper nouns keep conventional English spelling (Nepal, Kathmandu). Sentences begin with a capital letter.
+  </div>
+
+  <div class="ref-toggle">
+    <button class="toggle-btn" onclick="toggleRef(this)">
+      <span class="tarrow">▶</span> Romanization Quick Reference
+    </button>
+    <div class="ref-content" id="refContent">
+      <div class="ref-grid" style="margin-top:0.75rem">
+        <div class="ref-sec">
+          <h4>Vowels</h4>
+          <div class="ref-row"><span class="ref-dev">अ</span><span class="ref-arr">→</span><span class="ref-rom">a</span></div>
+          <div class="ref-row"><span class="ref-dev">आ</span><span class="ref-arr">→</span><span class="ref-rom">aa</span><span class="ref-note">(a at word end)</span></div>
+          <div class="ref-row"><span class="ref-dev">इ/ई</span><span class="ref-arr">→</span><span class="ref-rom">i</span><span class="ref-note">unified</span></div>
+          <div class="ref-row"><span class="ref-dev">उ/ऊ</span><span class="ref-arr">→</span><span class="ref-rom">u</span><span class="ref-note">unified</span></div>
+          <div class="ref-row"><span class="ref-dev">ए ऐ ओ औ</span><span class="ref-arr">→</span><span class="ref-rom">e ai o au</span></div>
+        </div>
+        <div class="ref-sec">
+          <h4>Retroflex (apostrophe)</h4>
+          <div class="ref-row"><span class="ref-dev">ट ठ ड ढ</span><span class="ref-arr">→</span><span class="ref-rom">t' t'h d' d'h</span></div>
+          <div class="ref-row"><span class="ref-dev">ण→न</span><span class="ref-arr">→</span><span class="ref-rom">n</span><span class="ref-note">merged</span></div>
+        </div>
+        <div class="ref-sec">
+          <h4>Dentals &amp; Velars</h4>
+          <div class="ref-row"><span class="ref-dev">त थ द ध न</span><span class="ref-arr">→</span><span class="ref-rom">t th d dh n</span></div>
+          <div class="ref-row"><span class="ref-dev">क ख ग घ</span><span class="ref-arr">→</span><span class="ref-rom">k kh g gh</span></div>
+          <div class="ref-row"><span class="ref-dev">च छ ज झ</span><span class="ref-arr">→</span><span class="ref-rom">ch chh j jh</span></div>
+        </div>
+        <div class="ref-sec">
+          <h4>Labials &amp; Others</h4>
+          <div class="ref-row"><span class="ref-dev">प फ ब/व भ म</span><span class="ref-arr">→</span><span class="ref-rom">p ph b bh m</span></div>
+          <div class="ref-row"><span class="ref-dev">य र ल ह</span><span class="ref-arr">→</span><span class="ref-rom">y r l h</span></div>
+          <div class="ref-row"><span class="ref-dev">स/श/ष</span><span class="ref-arr">→</span><span class="ref-rom">s</span><span class="ref-note">unified</span></div>
+        </div>
+        <div class="ref-sec">
+          <h4>Special Rules</h4>
+          <div class="ref-row"><span class="ref-note">Word-final aa → a</span></div>
+          <div class="ref-row"><span class="ref-note">Word-final inherent a → dropped</span></div>
+          <div class="ref-row"><span class="ref-note">Nipat keep full vowels</span></div>
+          <div class="ref-row"><span class="ref-note">Sentences capitalised</span></div>
+          <div class="ref-row"><span class="ref-note">Proper nouns: English convention</span></div>
+        </div>
+        <div class="ref-sec">
+          <h4>Common Nipat</h4>
+          <div class="ref-row"><span class="ref-dev">को</span><span class="ref-arr">→</span><span class="ref-rom">ko</span></div>
+          <div class="ref-row"><span class="ref-dev">मा</span><span class="ref-arr">→</span><span class="ref-rom">maa</span></div>
+          <div class="ref-row"><span class="ref-dev">ले</span><span class="ref-arr">→</span><span class="ref-rom">le</span></div>
+          <div class="ref-row"><span class="ref-dev">लाई</span><span class="ref-arr">→</span><span class="ref-rom">laai</span></div>
+          <div class="ref-row"><span class="ref-dev">बाट</span><span class="ref-arr">→</span><span class="ref-rom">baat</span></div>
+          <div class="ref-row"><span class="ref-dev">र</span><span class="ref-arr">→</span><span class="ref-rom">ra</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  © 2026 Krish Simkhada &nbsp;·&nbsp;
+  <a href="index.html">Converter</a> &nbsp;·&nbsp;
+  <a href="alphabet.html">Alphabet</a> &nbsp;·&nbsp;
+  <a href="about.html">About</a>
+</footer>
+
+<script>
+const simplifyMap = [
+  {from:'ज्ञ',to:'ग्य',label:'ज्ञ → ग्य'},
+  {from:'क्ष',to:'क्स',label:'क्ष → क्स'},
+  {from:'ई', to:'इ', label:'ई → इ'},
+  {from:'ऊ', to:'उ', label:'ऊ → उ'},
+  {from:'ी', to:'ि', label:'ी → ि'},
+  {from:'ू', to:'ु', label:'ू → ु'},
+  {from:'श', to:'स', label:'श → स'},
+  {from:'ष', to:'स', label:'ष → स'},
+  {from:'ण', to:'न', label:'ण → न'},
+  {from:'व', to:'ब', label:'व → ब'},
+];
+
+function simplifyDevanagari(text) {
+  const applied = new Set();
+  let r = text;
+  for (const rule of simplifyMap) {
+    if (r.includes(rule.from)) { applied.add(rule.label); r = r.split(rule.from).join(rule.to); }
+  }
+  return {text: r, applied};
+}
+
+const HALANT='\u094D', ANUSVARA='\u0902', VISARGA='\u0903', CHANDRABINDU='\u0901';
+
+const vowelMap={'\u0905':'a','\u0906':'aa','\u0907':'i','\u0908':'i','\u0909':'u','\u090A':'u','\u090F':'e','\u0910':'ai','\u0913':'o','\u0914':'au','\u090B':'ri'};
+const matraMap={'\u093E':'aa','\u093F':'i','\u0940':'i','\u0941':'u','\u0942':'u','\u0947':'e','\u0948':'ai','\u094B':'o','\u094C':'au','\u0943':'ri'};
+const consonantMap={'\u0915':'k','\u0916':'kh','\u0917':'g','\u0918':'gh','\u0919':'ng','\u091A':'ch','\u091B':'chh','\u091C':'j','\u091D':'jh','\u091E':'ny','\u091F':"t'",'\u0920':"t'h",'\u0921':"d'",'\u0922':"d'h",'\u0923':'n','\u0924':'t','\u0925':'th','\u0926':'d','\u0927':'dh','\u0928':'n','\u092A':'p','\u092B':'ph','\u092C':'b','\u092D':'bh','\u092E':'m','\u092F':'y','\u0930':'r','\u0932':'l','\u0935':'b','\u0936':'s','\u0937':'s','\u0938':'s','\u0939':'h','\u0934':'lh'};
+
+// Nipat are exempt from word-final vowel rules — they keep their full vowels
+const NIPAT = new Set(['को','मा','ले','लाई','लाइ','बाट','र','सँग','संग','भन्दा','देखि','सम्म','मार्फत','तर्फ','प्रति','भित्र','बाहिर','अगाडि','पछाडि','माथि','तल','नजिक','टाढा','हरु','हरू']);
+
+// Proper nouns with established international spellings
+const PROPER_NOUNS = new Map([['नेपाल','Nepal'],['काठमाडौं','Kathmandu'],['काठमाण्डौ','Kathmandu'],['पोखरा','Pokhara'],['लुम्बिनी','Lumbini'],['हिमालय','Himalaya'],['एभरेस्ट','Everest']]);
+
+const isC=ch=>ch in consonantMap, isV=ch=>ch in vowelMap, isM=ch=>ch in matraMap;
+// Exclude purnaviram । (U+0964) and double purnaviram ॥ (U+0965) from Devanagari
+// so they fall into the non-dev token branch and get replaced with . and ..
+const isDev=ch=>ch>='\u0900'&&ch<='\u097F'&&ch!=='\u0964'&&ch!=='\u0965';
+
+function romanizeWord(chars, skipFinal) {
+  let res='', i=0;
+  function isLastC(pos) {
+    let j=pos+1;
+    if(j<chars.length&&(isM(chars[j])||chars[j]===HALANT))j++;
+    while(j<chars.length&&(chars[j]===ANUSVARA||chars[j]===VISARGA||chars[j]===CHANDRABINDU))j++;
+    return j>=chars.length;
+  }
+  while(i<chars.length){
+    const ch=chars[i];
+    if(ch===ANUSVARA){res+='n';i++;continue}
+    if(ch===VISARGA){res+='h';i++;continue}
+    if(ch===CHANDRABINDU){res+='n';i++;continue}
+    if(ch===HALANT){i++;continue}
+    if(isV(ch)){
+      res+=vowelMap[ch]; i++;
+      if(i<chars.length&&chars[i]===ANUSVARA){res+='n';i++}
+      if(i<chars.length&&chars[i]===VISARGA){res+='h';i++}
+      continue;
+    }
+    if(isC(ch)){
+      const wf=!skipFinal&&isLastC(i);
+      res+=consonantMap[ch]; i++;
+      if(i<chars.length){
+        const nx=chars[i];
+        if(nx===HALANT){i++}
+        else if(isM(nx)){
+          let m=matraMap[nx];
+          if(wf&&m==='aa')m='a'; // word-final aa → a (not for nipat)
+          res+=m; i++;
+          if(i<chars.length&&chars[i]===ANUSVARA){res+='n';i++}
+          if(i<chars.length&&chars[i]===VISARGA){res+='h';i++}
+        } else if(nx===ANUSVARA){if(!wf)res+='a';res+='n';i++}
+        else if(nx===VISARGA){if(!wf)res+='a';res+='h';i++}
+        else if(nx===CHANDRABINDU){if(!wf)res+='a';res+='n';i++}
+        else{if(!wf)res+='a'} // inherent a: drop if word-final (not for nipat)
+      }
+      // end of word: word-final, inherent a dropped (skipFinal=true means !wf so inherent a kept)
+      continue;
+    }
+    res+=ch; i++;
+  }
+  return res;
+}
+
+function romanize(text) {
+  const tokens=[];
+  let cur='', curDev=null;
+  for(const ch of text){
+    const dev=isDev(ch);
+    if(curDev===null){cur=ch;curDev=dev}
+    else if(dev===curDev){cur+=ch}
+    else{tokens.push({dev:curDev,value:cur});cur=ch;curDev=dev}
+  }
+  if(cur)tokens.push({dev:curDev,value:cur});
+
+  let result='', capNext=true;
+  for(const tok of tokens){
+    if(!tok.dev){
+      let out=tok.value.replace(/।/g,'.').replace(/॥/g,'..').replace(/[०-९]/g,d=>'०१२३४५६७८९'.indexOf(d).toString());
+      result+=out;
+      if(/[.!?।]/.test(out))capNext=true;
+      continue;
+    }
+    const word=tok.value;
+    if(PROPER_NOUNS.has(word)){
+      let pn=PROPER_NOUNS.get(word);
+      if(capNext){pn=pn[0].toUpperCase()+pn.slice(1);capNext=false}
+      result+=pn; continue;
+    }
+    const isNipat=NIPAT.has(word);
+    let roman=romanizeWord([...word], isNipat);
+    if(capNext&&roman.length>0){roman=roman[0].toUpperCase()+roman.slice(1);capNext=false}
+    result+=roman;
+  }
+  return result;
+}
+
+function convert(){
+  const input=document.getElementById('input').value;
+  document.getElementById('charCount').textContent=input.length+' characters';
+  const devOut=document.getElementById('dev-out'), romOut=document.getElementById('rom-out'), panel=document.getElementById('changes-panel');
+  if(!input.trim()){
+    devOut.textContent='Reformed Nepali will appear here...'; devOut.className='out-text empty';
+    romOut.textContent='Romanized text will appear here...'; romOut.className='out-text roman empty';
+    panel.style.display='none'; return;
+  }
+  const {text:simplified,applied}=simplifyDevanagari(input);
+  const roman=romanize(simplified);
+  devOut.textContent=simplified; devOut.className='out-text';
+  romOut.textContent=roman; romOut.className='out-text roman';
+  if(applied.size>0){
+    panel.style.display='block';
+    document.getElementById('changes-count').textContent=applied.size+' rule'+(applied.size>1?'s':'')+' applied';
+    const list=document.getElementById('changes-list'); list.innerHTML='';
+    for(const change of applied){
+      const parts=change.split(' → ');
+      const tag=document.createElement('div'); tag.className='ctag';
+      tag.innerHTML=`<span class="from">${parts[0]}</span><span class="arrow">→</span><span class="to">${parts[1]}</span>`;
+      list.appendChild(tag);
+    }
+  } else { panel.style.display='none'; }
+}
+
+function clearAll(){document.getElementById('input').value='';convert()}
+function loadSample(){document.getElementById('input').value='नेपाल एउटा सुन्दर देश हो। यहाँ अग्लो हिमाल, हरिया जंगल र फराकिला उपत्यकाहरू छन्। नेपालीहरू आफ्नो संस्कृति र परम्परामा विश्वास गर्छन्। यहाँका मानिसहरू साहसी र परिश्रमी छन्। हाम्रो देशको प्राकृतिक सौन्दर्यले संसारभरका पर्यटकहरूलाई आकर्षित गर्छ।';convert()}
+function copyText(id,btn){navigator.clipboard.writeText(document.getElementById(id).textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied')},2000)})}
+function toggleRef(btn){document.getElementById('refContent').classList.toggle('open');btn.querySelector('.tarrow').classList.toggle('open')}
+</script>
+</body>
+</html>
