@@ -198,6 +198,7 @@ footer a:hover{color:var(--text)}
 </footer>
 
 <script>
+// ─── Devanagari simplification ─────────────────────────────────────────────
 const simplifyMap = [
   {from:'ज्ञ',to:'ग्य',label:'ज्ञ → ग्य'},
   {from:'क्ष',to:'क्स',label:'क्ष → क्स'},
@@ -220,61 +221,118 @@ function simplifyDevanagari(text) {
   return {text: r, applied};
 }
 
+// ─── Unicode constants ──────────────────────────────────────────────────────
 const HALANT='\u094D', ANUSVARA='\u0902', VISARGA='\u0903', CHANDRABINDU='\u0901';
 
+// ─── Lookup tables ──────────────────────────────────────────────────────────
 const vowelMap={'\u0905':'a','\u0906':'aa','\u0907':'i','\u0908':'i','\u0909':'u','\u090A':'u','\u090F':'e','\u0910':'ai','\u0913':'o','\u0914':'au','\u090B':'ri'};
 const matraMap={'\u093E':'aa','\u093F':'i','\u0940':'i','\u0941':'u','\u0942':'u','\u0947':'e','\u0948':'ai','\u094B':'o','\u094C':'au','\u0943':'ri'};
 const consonantMap={'\u0915':'k','\u0916':'kh','\u0917':'g','\u0918':'gh','\u0919':'ng','\u091A':'ch','\u091B':'chh','\u091C':'j','\u091D':'jh','\u091E':'ny','\u091F':"t'",'\u0920':"t'h",'\u0921':"d'",'\u0922':"d'h",'\u0923':'n','\u0924':'t','\u0925':'th','\u0926':'d','\u0927':'dh','\u0928':'n','\u092A':'p','\u092B':'ph','\u092C':'b','\u092D':'bh','\u092E':'m','\u092F':'y','\u0930':'r','\u0932':'l','\u0935':'b','\u0936':'s','\u0937':'s','\u0938':'s','\u0939':'h','\u0934':'lh'};
 
-// Nipat are exempt from word-final vowel rules — they keep their full vowels
+// Nipat — standalone particles, exempt from word-final vowel rules
 const NIPAT = new Set(['को','मा','ले','लाई','लाइ','बाट','र','सँग','संग','भन्दा','देखि','सम्म','मार्फत','तर्फ','प्रति','भित्र','बाहिर','अगाडि','पछाडि','माथि','तल','नजिक','टाढा','हरु','हरू']);
 
-// Proper nouns with established international spellings
+// Nipat suffixes — ordered longest first so greedy match works correctly.
+// These are postpositions that are written attached to the preceding word
+// (e.g. देशको, परम्परामा, सौन्दर्यले, पर्यटकहरूलाई).
+// We split them off so the base word gets final-vowel rules and the nipat keeps its vowel.
+const NIPAT_SUFFIXES = ['लाई','लाइ','बाट','सँग','संग','माथि','को','मा','ले'];
+
+// Proper nouns — keep established English spellings
 const PROPER_NOUNS = new Map([['नेपाल','Nepal'],['काठमाडौं','Kathmandu'],['काठमाण्डौ','Kathmandu'],['पोखरा','Pokhara'],['लुम्बिनी','Lumbini'],['हिमालय','Himalaya'],['एभरेस्ट','Everest']]);
 
 const isC=ch=>ch in consonantMap, isV=ch=>ch in vowelMap, isM=ch=>ch in matraMap;
-// Exclude purnaviram । (U+0964) and double purnaviram ॥ (U+0965) from Devanagari
-// so they fall into the non-dev token branch and get replaced with . and ..
+// Exclude purnaviram । (U+0964) and double purnaviram ॥ (U+0965) so they
+// fall into the non-dev token branch and get mapped to . and ..
 const isDev=ch=>ch>='\u0900'&&ch<='\u097F'&&ch!=='\u0964'&&ch!=='\u0965';
 
+// Split a Devanagari word into [base, nipat] if it ends with a nipat suffix,
+// otherwise return [word, null]. Minimum base length of 1 character prevents
+// matching a word that is itself purely a nipat (those are handled separately).
+function splitNipatSuffix(word) {
+  for (const sfx of NIPAT_SUFFIXES) {
+    if (word.endsWith(sfx) && word.length > sfx.length) {
+      return [word.slice(0, word.length - sfx.length), sfx];
+    }
+  }
+  return [word, null];
+}
+
+// Romanize a single Devanagari word.
+// skipFinal=true  → nipat: keep word-final vowels as-is
+// skipFinal=false → regular word: drop final inherent a; shorten final aa→a
+//
+// Extra rule: if the word-final consonant romanizes to a multi-char string
+// ending in 'h' (aspirates: kh, gh, chh, jh, t'h, d'h, th, dh, ph, bh, lh),
+// keep the inherent 'a' even for regular words — "garchh" is unreadable,
+// "garchha" is the correct and expected form.
 function romanizeWord(chars, skipFinal) {
   let res='', i=0;
+
   function isLastC(pos) {
     let j=pos+1;
     if(j<chars.length&&(isM(chars[j])||chars[j]===HALANT))j++;
     while(j<chars.length&&(chars[j]===ANUSVARA||chars[j]===VISARGA||chars[j]===CHANDRABINDU))j++;
     return j>=chars.length;
   }
+
+  // Should the final 'a' be kept for this consonant romanization?
+  // Yes if skipFinal (nipat), OR if the roman ends in 'h' (aspirate/retroflex)
+  function keepFinalA(roman) {
+    return skipFinal || roman.endsWith('h');
+  }
+
   while(i<chars.length){
     const ch=chars[i];
     if(ch===ANUSVARA){res+='n';i++;continue}
     if(ch===VISARGA){res+='h';i++;continue}
     if(ch===CHANDRABINDU){res+='n';i++;continue}
     if(ch===HALANT){i++;continue}
+
     if(isV(ch)){
       res+=vowelMap[ch]; i++;
       if(i<chars.length&&chars[i]===ANUSVARA){res+='n';i++}
       if(i<chars.length&&chars[i]===VISARGA){res+='h';i++}
       continue;
     }
+
     if(isC(ch)){
-      const wf=!skipFinal&&isLastC(i);
-      res+=consonantMap[ch]; i++;
+      const roman=consonantMap[ch];
+      const wf=isLastC(i); // is this the last consonant in the word?
+      res+=roman; i++;
+
       if(i<chars.length){
         const nx=chars[i];
-        if(nx===HALANT){i++}
-        else if(isM(nx)){
+        if(nx===HALANT){
+          i++; // conjunct — no vowel
+        } else if(isM(nx)){
           let m=matraMap[nx];
-          if(wf&&m==='aa')m='a'; // word-final aa → a (not for nipat)
+          // word-final aa → a, unless we should keep it (nipat or aspirate)
+          if(wf && m==='aa' && !keepFinalA(roman)) m='a';
           res+=m; i++;
           if(i<chars.length&&chars[i]===ANUSVARA){res+='n';i++}
           if(i<chars.length&&chars[i]===VISARGA){res+='h';i++}
-        } else if(nx===ANUSVARA){if(!wf)res+='a';res+='n';i++}
-        else if(nx===VISARGA){if(!wf)res+='a';res+='h';i++}
-        else if(nx===CHANDRABINDU){if(!wf)res+='a';res+='n';i++}
-        else{if(!wf)res+='a'} // inherent a: drop if word-final (not for nipat)
+        } else if(nx===ANUSVARA){
+          if(!wf) res+='a';
+          else if(keepFinalA(roman)) res+='a';
+          res+='n'; i++;
+        } else if(nx===VISARGA){
+          if(!wf) res+='a';
+          else if(keepFinalA(roman)) res+='a';
+          res+='h'; i++;
+        } else if(nx===CHANDRABINDU){
+          if(!wf) res+='a';
+          else if(keepFinalA(roman)) res+='a';
+          res+='n'; i++;
+        } else {
+          // inherent 'a' — keep if not word-final, or if aspirate/nipat
+          if(!wf || keepFinalA(roman)) res+='a';
+        }
+      } else {
+        // end of chars array — word-final
+        if(keepFinalA(roman)) res+='a';
+        // else: drop inherent a (regular consonant, word-final)
       }
-      // end of word: word-final, inherent a dropped (skipFinal=true means !wf so inherent a kept)
       continue;
     }
     res+=ch; i++;
@@ -282,7 +340,9 @@ function romanizeWord(chars, skipFinal) {
   return res;
 }
 
+// Main romanize — tokenize, split attached nipat, romanize each piece
 function romanize(text) {
+  // Split text into Devanagari vs non-Devanagari spans
   const tokens=[];
   let cur='', curDev=null;
   for(const ch of text){
@@ -293,28 +353,53 @@ function romanize(text) {
   }
   if(cur)tokens.push({dev:curDev,value:cur});
 
-  let result='', capNext=true;
+  // Expand Devanagari tokens: split off attached nipat suffixes
+  // e.g. "देशको" → [{dev:true,"देश"}, {nipat:true,"को"}]
+  const expanded=[];
   for(const tok of tokens){
+    if(!tok.dev){ expanded.push(tok); continue; }
+    const word=tok.value;
+    if(NIPAT.has(word)){
+      expanded.push({dev:true, value:word, isNipat:true}); continue;
+    }
+    const [base, sfx]=splitNipatSuffix(word);
+    if(sfx){
+      expanded.push({dev:true, value:base, isNipat:false});
+      expanded.push({dev:true, value:sfx,  isNipat:true, addSpace:true});
+    } else {
+      expanded.push({dev:true, value:word, isNipat:false});
+    }
+  }
+
+  let result='', capNext=true;
+  for(const tok of expanded){
     if(!tok.dev){
-      let out=tok.value.replace(/।/g,'.').replace(/॥/g,'..').replace(/[०-९]/g,d=>'०१२३४५६७८९'.indexOf(d).toString());
+      let out=tok.value
+        .replace(/।/g,'.').replace(/॥/g,'..')
+        .replace(/[०-९]/g,d=>'०१२३४५६७८९'.indexOf(d).toString());
       result+=out;
-      if(/[.!?।]/.test(out))capNext=true;
+      if(/[.!?]/.test(out)) capNext=true;
       continue;
     }
+
+    // Insert space before split-off nipat (was attached in original)
+    if(tok.addSpace) result+=' ';
+
     const word=tok.value;
     if(PROPER_NOUNS.has(word)){
       let pn=PROPER_NOUNS.get(word);
       if(capNext){pn=pn[0].toUpperCase()+pn.slice(1);capNext=false}
       result+=pn; continue;
     }
-    const isNipat=NIPAT.has(word);
-    let roman=romanizeWord([...word], isNipat);
+
+    let roman=romanizeWord([...word], tok.isNipat);
     if(capNext&&roman.length>0){roman=roman[0].toUpperCase()+roman.slice(1);capNext=false}
     result+=roman;
   }
   return result;
 }
 
+// ─── UI ──────────────────────────────────────────────────────────────────────
 function convert(){
   const input=document.getElementById('input').value;
   document.getElementById('charCount').textContent=input.length+' characters';
