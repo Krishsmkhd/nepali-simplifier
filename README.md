@@ -2,7 +2,7 @@
 
 A proposed phonetically rationalized writing system for Nepali, with an interactive converter tool.
 
-**Live site:** [krishsimkhada.github.io/nepali-simplifier](https://krishsimkhada.github.io/nepali-simplifier)
+**Live site:** [krishsmkhd.github.io/nepali-simplifier](https://krishsmkhd.github.io/nepali-simplifier)
 
 ---
 
